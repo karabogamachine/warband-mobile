@@ -74,7 +74,8 @@ export default function App() {
 
   // Connect to server
   const connect = useCallback(() => {
-    const ws = new WebSocket(`ws://${window.location.hostname}:3001`);
+    const wsHost = window.location.hostname === 'localhost' ? 'localhost' : window.location.hostname;
+    const ws = new WebSocket(`ws://${wsHost}:3001`);
     wsRef.current = ws;
 
     ws.onopen = () => {

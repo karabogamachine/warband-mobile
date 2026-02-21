@@ -106,8 +106,8 @@ function generateTerritories(): Territory[] {
 // WEBSOCKET SERVER
 // ============================================
 
-const wss = new WebSocketServer({ port: 3001 });
-console.log('⚔️  Warband server running on ws://localhost:3001');
+const wss = new WebSocketServer({ host: '0.0.0.0', port: 3001 });
+console.log('⚔️  Warband server running on ws://0.0.0.0:3001');
 
 wss.on('connection', (ws) => {
   const playerId = uuid();
