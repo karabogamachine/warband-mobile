@@ -73,26 +73,43 @@ export default function App() {
   const [showPanel, setShowPanel] = useState<'none' | 'army' | 'chat'>('none');
 
   // Connect to server
+  const [connectionError, setConnectionError] = useState<string | null>(null);
+  
   const connect = useCallback(() => {
-    const wsHost = window.location.hostname === 'localhost' ? 'localhost' : window.location.hostname;
-    const ws = new WebSocket(`ws://${wsHost}:3001`);
-    wsRef.current = ws;
+    const wsHost = window.location.hostname;
+    const wsUrl = `ws://${wsHost}:3001`;
+    console.log('Connecting to:', wsUrl);
+    setConnectionError(null);
+    
+    try {
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
 
-    ws.onopen = () => {
-      console.log('Connected to server');
-      setGameState(s => ({ ...s, connected: true }));
-      ws.send(JSON.stringify({ type: 'join', name: playerName || 'Warrior' }));
-    };
+      ws.onopen = () => {
+        console.log('Connected to server');
+        setGameState(s => ({ ...s, connected: true }));
+        ws.send(JSON.stringify({ type: 'join', name: playerName || 'Warrior' }));
+      };
 
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      handleServerMessage(msg);
-    };
+      ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        handleServerMessage(msg);
+      };
 
-    ws.onclose = () => {
-      console.log('Disconnected');
-      setGameState(s => ({ ...s, connected: false }));
-    };
+      ws.onclose = (e) => {
+        console.log('Disconnected:', e.code, e.reason);
+        setGameState(s => ({ ...s, connected: false }));
+        setConnectionError(`Disconnected (${e.code})`);
+      };
+      
+      ws.onerror = (e) => {
+        console.error('WebSocket error:', e);
+        setConnectionError('Connection failed - server may be offline');
+      };
+    } catch (err) {
+      console.error('Failed to create WebSocket:', err);
+      setConnectionError('Failed to connect');
+    }
   }, [playerName]);
 
   // Handle server messages
@@ -405,8 +422,12 @@ export default function App() {
             {player?.name?.charAt(0) || '?'}
           </div>
           <div>
-            <p className="font-bold text-white">{player?.name || 'Loading...'}</p>
-            <p className="text-xs text-slate-400">{player?.faction}</p>
+            <p className="font-bold text-white">
+              {connectionError ? '❌ Error' : player?.name || 'Connecting...'}
+            </p>
+            <p className="text-xs text-slate-400">
+              {connectionError || player?.faction || 'Please wait...'}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
