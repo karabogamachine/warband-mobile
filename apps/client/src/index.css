@@ -1,4 +1,8 @@
-@import "tailwindcss";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
   --bg-dark: #0f172a;
@@ -8,12 +12,20 @@
   --accent: #6366f1;
 }
 
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
+  font-family: system-ui, -apple-system, sans-serif;
   background: var(--bg-dark);
   color: var(--text-primary);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 .game-canvas {
@@ -21,26 +33,33 @@ body {
 }
 
 .glass {
-  background: rgba(30, 41, 59, 0.8);
+  background: rgba(30, 41, 59, 0.9);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Buttons */
 .btn {
-  @apply px-4 py-2 rounded-xl font-medium transition-all active:scale-95;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: scale(0.95);
 }
 
 .btn-primary {
-  @apply btn bg-indigo-600 text-white hover:bg-indigo-700;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
 }
 
-.btn-secondary {
-  @apply btn bg-slate-700 text-white hover:bg-slate-600;
-}
-
-/* Mobile scrollbar hide */
-::-webkit-scrollbar {
-  display: none;
+.btn-primary:hover {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
 }
 
 /* Animations */
@@ -60,4 +79,93 @@ body {
 
 .float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Utility classes */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.m-2 { margin: 0.5rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-12 { margin-bottom: 3rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-12 { margin-top: 3rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.w-full { width: 100%; }
+.w-10 { width: 2.5rem; }
+.w-2 { width: 0.5rem; }
+.h-full { height: 100%; }
+.h-10 { height: 2.5rem; }
+.h-2 { height: 0.5rem; }
+.h-32 { height: 8rem; }
+.min-w-0 { min-width: 0; }
+.max-w-sm { max-width: 24rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-5xl { font-size: 3rem; }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.text-white { color: white; }
+.text-slate-300 { color: #cbd5e1; }
+.text-slate-400 { color: #94a3b8; }
+.text-slate-500 { color: #64748b; }
+.text-yellow-400 { color: #facc15; }
+.text-indigo-400 { color: #818cf8; }
+.bg-slate-700 { background-color: #334155; }
+.bg-slate-800 { background-color: #1e293b; }
+.bg-indigo-600 { background-color: #4f46e5; }
+.border { border-width: 1px; }
+.border-slate-700 { border-color: #334155; }
+.space-y-2 > * + * { margin-top: 0.5rem; }
+.space-y-3 > * + * { margin-top: 0.75rem; }
+.space-y-4 > * + * { margin-top: 1rem; }
+.overflow-y-auto { overflow-y: auto; }
+.absolute { position: absolute; }
+.top-20 { top: 5rem; }
+.right-2 { right: 0.5rem; }
+.capitalize { text-transform: capitalize; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Background gradient */
+.bg-gradient {
+  background: linear-gradient(to bottom, #0f172a, #020617);
 }
