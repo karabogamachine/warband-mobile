@@ -76,8 +76,9 @@ export default function App() {
   const [connectionError, setConnectionError] = useState<string | null>(null);
   
   const connect = useCallback(() => {
-    const wsHost = window.location.hostname;
-    const wsUrl = `ws://${wsHost}:3001`;
+    // Use same origin with /ws path (proxied by Vite)
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProtocol}//${window.location.host}/ws`;
     console.log('Connecting to:', wsUrl);
     setConnectionError(null);
     
