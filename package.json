@@ -1,0 +1,11 @@
+{
+  "name": "warband-mobile",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
